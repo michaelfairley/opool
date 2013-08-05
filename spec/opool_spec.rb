@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'weakref'
+require 'ref'
 
 describe OPool do
   klass = Class.new do
@@ -14,19 +14,17 @@ describe OPool do
 
   it "will be garbage collected if completely deferenced" do
     instance = klass.new(12)
-    weak = WeakRef.new(instance)
+    weak = Ref::WeakReference.new(instance)
 
     GC.start
 
     instance.value.should == 12
-    weak.value.should == 12
+    weak.object.value.should == 12
 
     instance = nil
     GC.start
 
-    expect do
-      weak.value
-    end.to raise_error(WeakRef::RefError)
+    weak.object.should be_nil
   end
 
   it "is recyclable" do
@@ -49,7 +47,7 @@ describe OPool do
     value = "hello"
 
     instance = klass.new(value)
-    value = WeakRef.new(value)
+    value = Ref::WeakReference.new(value)
 
     instance.value.should == "hello"
 
@@ -62,8 +60,6 @@ describe OPool do
 
     GC.start
 
-    expect do
-      value.to_s
-    end.to raise_error(WeakRef::RefError)
+    value.object.should be_nil
   end
 end
