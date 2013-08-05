@@ -5,7 +5,7 @@ require 'opool/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "opool"
-  spec.version       = Opool::VERSION
+  spec.version       = OPool::VERSION
   spec.authors       = ["Michael Fairley"]
   spec.email         = ["michael.fairley@getbraintree.com"]
   spec.description   = %q{A tiny object pool}
